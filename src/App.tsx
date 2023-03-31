@@ -14,6 +14,34 @@ export const TokenContext = createContext({
   setToken: (() => "") as Dispatch<SetStateAction<string>>,
 });
 
+type Question = {
+  key: string;
+  summary: string;
+  description: string;
+  questioner: string;
+};
+
+export const QuestionContext = createContext({
+  questions: [] as Question[],
+  addQuestion: (question: Question) => {},
+  setQuestions: (() => []) as Dispatch<SetStateAction<Question[]>>,
+});
+
+export const QuestionProvider: FunctionComponent<any> = ({ children }) => {
+  const [questions, setQuestions] = useState<Question[]>([]);
+
+  const addQuestion = (question: Question) => {
+    const index = questions.findIndex((q) => q.key == question.key);
+    if (index === -1) setQuestions([...questions, question]);
+  };
+
+  return (
+    <QuestionContext.Provider value={{ questions, addQuestion, setQuestions }}>
+      {children}
+    </QuestionContext.Provider>
+  );
+};
+
 export const TokenProvider: FunctionComponent<any> = ({ children }) => {
   const [token, setToken] = useState<string>("");
 
@@ -25,32 +53,30 @@ export const TokenProvider: FunctionComponent<any> = ({ children }) => {
 };
 
 export const useToken = () => useContext(TokenContext);
+export const useQuestions = () => useContext(QuestionContext);
 
 function App() {
   return (
     <TokenProvider>
-      <LoginForm />
-      <QuestionList />
-      <QuestionForm />
+      <QuestionProvider>
+        <LoginForm />
+        <QuestionList />
+        <QuestionForm />
+      </QuestionProvider>
     </TokenProvider>
   );
 }
 
-type Question = {
-  key: string;
-  summary: string;
-  description: string;
-  questioner: string;
-};
-
 function QuestionForm() {
   const { token } = useToken();
+  const { addQuestion } = useQuestions();
   const [summary, setSummary] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [question, setQuestion] = useState<Question | null>(null);
   const [hasSubmitted, setHasSubmitted] = useState(false);
+  console.debug("render question form");
 
   if (token == "") {
     return <p>QuestionFrom disabled. User is not authenticated.</p>;
@@ -80,7 +106,10 @@ function QuestionForm() {
     if (response.status === 401) {
       setError(Error("Not authenticated."));
     } else if (response.status === 201) {
-      setQuestion(await response.json());
+      const question = await response.json();
+      console.log(question);
+      setQuestion(question);
+      addQuestion(question);
     }
     setIsLoaded(true);
   };
@@ -121,9 +150,10 @@ function QuestionForm() {
 }
 
 function QuestionList() {
+  const { questions, setQuestions } = useQuestions();
   const [error, setError] = useState<Error | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [questions, setQuestions] = useState<Question[]>([]);
+  console.debug("render question list");
 
   useEffect(() => {
     fetchQuestions();
