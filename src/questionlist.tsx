@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuestions } from "./App";
+import { useQuestions } from "./app";
 
 const QuestionList = () => {
   const { questions, setQuestions } = useQuestions();
