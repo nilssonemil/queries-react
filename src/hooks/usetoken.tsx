@@ -10,16 +10,25 @@ import {
 const TokenContext = createContext({
   isAuthenticated: false,
   token: "",
-  setToken: (() => "") as Dispatch<SetStateAction<string>>,
+  username: "",
+  setCredentials: (username: string, token: string) => {},
 });
 
 export const TokenProvider: FunctionComponent<any> = ({ children }) => {
-  const [token, setToken] = useState<string>("");
+  const [token, setToken] = useState("");
+  const [username, setUsername] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const isAuthenticated = token == "";
+  const setCredentials = (username: string, token: string) => {
+    setUsername(username);
+    setToken(token);
+    setIsAuthenticated(token != "");
+  };
 
   return (
-    <TokenContext.Provider value={{ isAuthenticated, token, setToken }}>
+    <TokenContext.Provider
+      value={{ isAuthenticated, token, username, setCredentials }}
+    >
       {children}
     </TokenContext.Provider>
   );

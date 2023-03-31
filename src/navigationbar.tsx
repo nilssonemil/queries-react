@@ -3,18 +3,25 @@ import { Link } from "react-router-dom";
 import { useToken } from "./hooks/usetoken";
 
 const NavigationBar = () => {
-  const { isAuthenticated } = useToken();
-  //<Link to={"/login"}>Login</Link>
+  const { username, isAuthenticated } = useToken();
+
+  const action = isAuthenticated ? (
+    <Typography>{username}</Typography>
+  ) : (
+    <Link to="login">Login</Link>
+  );
 
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          Queries
-        </Typography>
-        <a href="/login">Login</a>
-      </Toolbar>
-    </AppBar>
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" sx={{ flexGrow: 1 }}>
+            <Link to="/">Queries</Link>
+          </Typography>
+          {action}
+        </Toolbar>
+      </AppBar>
+    </>
   );
 };
 

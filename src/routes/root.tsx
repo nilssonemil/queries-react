@@ -1,11 +1,11 @@
-import QuestionForm from "../questionform";
-import QuestionList from "../questionlist";
+import { Outlet } from "react-router-dom";
+import NavigationBar from "../navigationbar";
 
 const Root = () => {
   return (
     <div>
-      <QuestionForm />
-      <QuestionList />
+      <NavigationBar />
+      <Outlet />
     </div>
   );
 };

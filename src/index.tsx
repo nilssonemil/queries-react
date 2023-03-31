@@ -1,13 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import Root from "./routes/root";
 import Login from "./routes/login";
 import NavigationBar from "./navigationbar";
 import { CssBaseline } from "@mui/material";
-import { TokenProvider } from "./hooks/usetoken";
+import { TokenProvider, useToken } from "./hooks/usetoken";
 import { QuestionProvider } from "./hooks/usequestions";
+import Questions from "./routes/questions";
+import NotFound from "./routes/notfound";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -17,10 +23,20 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
+    children: [
+      {
+        index: true,
+        element: <Questions />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+    ],
   },
   {
-    path: "/login",
-    element: <Login />,
+    path: "*",
+    element: <NotFound />,
   },
 ]);
 
@@ -29,7 +45,6 @@ root.render(
     <TokenProvider>
       <QuestionProvider>
         <CssBaseline>
-          <NavigationBar />
           <RouterProvider router={router} />
         </CssBaseline>
       </QuestionProvider>

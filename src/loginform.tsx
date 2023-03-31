@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { useToken } from "./hooks/usetoken";
 
 const LoginForm = () => {
-  const { token, setToken } = useToken();
+  const { token, setCredentials } = useToken();
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<Error | null>(null);
@@ -29,7 +29,7 @@ const LoginForm = () => {
     if (response.status === 401) {
       setError(Error("Not authenticated."));
     } else if (response.status === 200) {
-      setToken((await response.json()).token);
+      setCredentials(username, (await response.json()).token);
     }
     setIsLoaded(true);
   };
