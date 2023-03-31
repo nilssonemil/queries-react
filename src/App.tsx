@@ -64,17 +64,19 @@ function QuestionForm() {
   const postQuestion = async () => {
     setHasSubmitted(true);
     setIsLoaded(false);
+    console.log("current token", token);
     const response = await fetch("http://localhost:8080/questions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
       body: JSON.stringify({
         summary: summary,
-        desccription: description,
+        description: description,
       }),
     });
-
+    console.debug(response);
     if (response.status === 401) {
       setError(Error("Not authenticated."));
     } else if (response.status === 201) {
