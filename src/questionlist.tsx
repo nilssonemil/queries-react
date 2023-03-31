@@ -8,10 +8,6 @@ const QuestionList = () => {
   console.debug("render question list");
 
   useEffect(() => {
-    fetchQuestions();
-  }, []);
-
-  const fetchQuestions = () => {
     setIsLoaded(false);
     fetch("http://localhost:8080/questions")
       .then((res) => res.json())
@@ -25,7 +21,7 @@ const QuestionList = () => {
           setError(error);
         }
       );
-  };
+  }, [setQuestions]);
 
   if (error) {
     console.log("render error");
