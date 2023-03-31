@@ -1,8 +1,10 @@
-import { AppBar, Button, Toolbar, Typography } from "@mui/material";
-import { useToken } from "./app";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
+import { useToken } from "./hooks/usetoken";
 
 const NavigationBar = () => {
   const { isAuthenticated } = useToken();
+  //<Link to={"/login"}>Login</Link>
 
   return (
     <AppBar position="static">
@@ -10,7 +12,7 @@ const NavigationBar = () => {
         <Typography variant="h6" sx={{ flexGrow: 1 }}>
           Queries
         </Typography>
-        <Button color="inherit">Login</Button>
+        <a href="/login">Login</a>
       </Toolbar>
     </AppBar>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useQuestions } from "./app";
+import { useQuestions } from "./hooks/usequestions";
 
 const QuestionList = () => {
   const { questions, setQuestions } = useQuestions();

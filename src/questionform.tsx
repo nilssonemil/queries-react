@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Question, useQuestions, useToken } from "./app";
+import { useQuestions } from "./hooks/usequestions";
+import { useToken } from "./hooks/usetoken";
+import Question from "./types";
 
 const QuestionForm = () => {
   const { token } = useToken();

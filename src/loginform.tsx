@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useToken } from "./app";
+import { useToken } from "./hooks/usetoken";
 
 const LoginForm = () => {
   const { token, setToken } = useToken();
@@ -40,7 +40,7 @@ const LoginForm = () => {
   const form = (
     <form onSubmit={handleSubmit}>
       <label>
-        Summary:
+        Username:
         <input
           type="text"
           name="username"
@@ -49,7 +49,7 @@ const LoginForm = () => {
         />
       </label>
       <label>
-        Description:
+        Password:
         <input
           type="password"
           name="password"
@@ -63,16 +63,6 @@ const LoginForm = () => {
 
   const isAuthenticated = isLoaded && hasSubmitted && !error;
 
-  console.log(
-    "isAuthenticated",
-    isAuthenticated,
-    "isLoaded",
-    isLoaded,
-    "error",
-    error,
-    "hasSubmitted",
-    hasSubmitted
-  );
   if (isAuthenticated) {
     return <p>You have authenticated and received a token: {token}</p>;
   }
