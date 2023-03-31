@@ -1,6 +1,7 @@
 import {
   createContext,
   Dispatch,
+  Fragment,
   FunctionComponent,
   SetStateAction,
   useContext,
@@ -9,8 +10,11 @@ import {
 import LoginForm from "./loginform";
 import QuestionForm from "./questionform";
 import QuestionList from "./questionlist";
+import NavigationBar from "./navigationbar";
+import { CssBaseline, ScopedCssBaseline } from "@mui/material";
 
 export const TokenContext = createContext({
+  isAuthenticated: false,
   token: "",
   setToken: (() => "") as Dispatch<SetStateAction<string>>,
 });
@@ -46,8 +50,10 @@ export const QuestionProvider: FunctionComponent<any> = ({ children }) => {
 export const TokenProvider: FunctionComponent<any> = ({ children }) => {
   const [token, setToken] = useState<string>("");
 
+  const isAuthenticated = token == "";
+
   return (
-    <TokenContext.Provider value={{ token, setToken }}>
+    <TokenContext.Provider value={{ isAuthenticated, token, setToken }}>
       {children}
     </TokenContext.Provider>
   );
@@ -58,13 +64,17 @@ export const useQuestions = () => useContext(QuestionContext);
 
 function App() {
   return (
-    <TokenProvider>
-      <QuestionProvider>
-        <LoginForm />
-        <QuestionList />
-        <QuestionForm />
-      </QuestionProvider>
-    </TokenProvider>
+    <Fragment>
+      <CssBaseline>
+        <TokenProvider>
+          <QuestionProvider>
+            <NavigationBar />
+            <QuestionList />
+            <QuestionForm />
+          </QuestionProvider>
+        </TokenProvider>
+      </CssBaseline>
+    </Fragment>
   );
 }
 
