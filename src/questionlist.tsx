@@ -46,6 +46,9 @@ const QuestionList = () => {
       <Card sx={{ mt: 3, p: 1 }}>
         <CardContent>
           <Typography variant="h5">{q.summary}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+            asked by {q.questioner}
+          </Typography>
           <Typography variant="body1">{q.description}</Typography>
         </CardContent>
         <CardActions sx={{ justifyContent: "space-between" }}>
