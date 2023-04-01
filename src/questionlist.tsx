@@ -63,7 +63,16 @@ const QuestionList = () => {
         </CardActions>
       </Card>
     ));
-    return <Box component="ul">{listItems}</Box>;
+    return (
+      <Box sx={{ mt: 4 }}>
+        <Typography component="h1" variant="h5">
+          Questions
+        </Typography>
+        <Box component="ul" sx={{ width: 1, pl: 0 }}>
+          {listItems}
+        </Box>
+      </Box>
+    );
   }
 };
 

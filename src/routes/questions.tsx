@@ -1,12 +1,14 @@
-import { Container } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import QuestionForm from "../questionform";
 import QuestionList from "../questionlist";
 
 const Questions = () => {
   return (
-    <Container component="main" maxWidth="sm">
-      <QuestionForm />
-      <QuestionList />
+    <Container component="main" maxWidth="md">
+      <Box justifyContent="center" alignItems="center">
+        <QuestionForm />
+        <QuestionList />
+      </Box>
     </Container>
   );
 };
