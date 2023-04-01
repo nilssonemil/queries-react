@@ -9,11 +9,21 @@ import reportWebVitals from "./reportWebVitals";
 import Root from "./routes/root";
 import Login from "./routes/login";
 import NavigationBar from "./navigationbar";
-import { CssBaseline } from "@mui/material";
+import { createTheme, CssBaseline } from "@mui/material";
 import { TokenProvider, useToken } from "./hooks/usetoken";
 import { QuestionProvider } from "./hooks/usequestions";
 import Questions from "./routes/questions";
 import NotFound from "./routes/notfound";
+import { ThemeProvider } from "@emotion/react";
+
+const theme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#eb4034",
+    },
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -42,13 +52,15 @@ const router = createBrowserRouter([
 
 root.render(
   <React.StrictMode>
-    <TokenProvider>
-      <QuestionProvider>
-        <CssBaseline>
-          <RouterProvider router={router} />
-        </CssBaseline>
-      </QuestionProvider>
-    </TokenProvider>
+    <ThemeProvider theme={theme}>
+      <TokenProvider>
+        <QuestionProvider>
+          <CssBaseline>
+            <RouterProvider router={router} />
+          </CssBaseline>
+        </QuestionProvider>
+      </TokenProvider>
+    </ThemeProvider>
   </React.StrictMode>
 );
 

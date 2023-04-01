@@ -1,5 +1,14 @@
+import {
+  Button,
+  Container,
+  FormControl,
+  Paper,
+  TextField,
+} from "@mui/material";
+import { Box } from "@mui/system";
 import { useContext, useState } from "react";
 import { useToken } from "./hooks/usetoken";
+import "./loginform.css";
 
 const LoginForm = () => {
   const { token, setCredentials } = useToken();
@@ -9,7 +18,7 @@ const LoginForm = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     authenticate();
   };
@@ -38,40 +47,46 @@ const LoginForm = () => {
   const showError = hasSubmitted && isLoaded && error;
 
   const form = (
-    <form onSubmit={handleSubmit}>
-      <label>
-        Username:
-        <input
-          type="text"
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          name="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      <input type="submit" value="Submit" disabled={isWaiting} />
-    </form>
+    <FormControl>
+      <TextField
+        label="username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        margin="dense"
+      />
+      <TextField
+        label="password"
+        type="password"
+        value={password}
+        margin="dense"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <Box textAlign="center">
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={onSubmit}
+          sx={{ width: 200, padding: 1, margin: 3 }}
+          size="large"
+        >
+          Sign in
+        </Button>
+      </Box>
+    </FormControl>
   );
 
   const isAuthenticated = isLoaded && hasSubmitted && !error;
 
-  if (isAuthenticated) {
-    return <p>You have authenticated and received a token: {token}</p>;
-  }
-
   return (
-    <div>
-      {form}
-      {showError && <div>{error.message}</div>}
-    </div>
+    <Container maxWidth="sm">
+      <Paper elevation={3}>
+        <Box display="flex" flexDirection="column" padding={1} m={2} pt={3}>
+          {form}
+
+          {showError && <div>{error.message}</div>}
+        </Box>
+      </Paper>
+    </Container>
   );
 };
 
