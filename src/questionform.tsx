@@ -44,6 +44,8 @@ const QuestionForm = () => {
     } else if (response.status === 201) {
       const question = await response.json();
       addQuestion(question);
+      setSummary("");
+      setDescription("");
     }
     setIsLoaded(true);
   };
