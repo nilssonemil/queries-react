@@ -2,16 +2,13 @@ import {
   Alert,
   Box,
   Button,
-  Link,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 import { useQuestions } from "./hooks/usequestions";
 import { useToken } from "./hooks/usetoken";
-import Question from "./types";
 
 const QuestionForm = () => {
   const { isAuthenticated, token, username } = useToken();
