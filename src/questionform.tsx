@@ -2,17 +2,19 @@ import {
   Alert,
   Box,
   Button,
+  Link,
   Paper,
   TextField,
   Typography,
 } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
 import { useState } from "react";
 import { useQuestions } from "./hooks/usequestions";
 import { useToken } from "./hooks/usetoken";
 import Question from "./types";
 
 const QuestionForm = () => {
-  const { token } = useToken();
+  const { isAuthenticated, token, username } = useToken();
   const { addQuestion } = useQuestions();
   const [summary, setSummary] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -49,6 +51,56 @@ const QuestionForm = () => {
     setIsLoaded(true);
   };
 
+  const form = (
+    <Box component="form" onSubmit={onSubmit} sx={{ mt: 1 }} textAlign="center">
+      <TextField
+        required
+        margin="normal"
+        fullWidth
+        label="Summary"
+        type="text"
+        name="summary"
+        value={summary}
+        onChange={(e) => setSummary(e.target.value)}
+      />
+      <TextField
+        required
+        margin="normal"
+        fullWidth
+        label="Description"
+        type="text"
+        name="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        multiline
+        rows={4}
+      />
+      {error && <Alert severity="error">{error.message}</Alert>}
+      <Button
+        type="submit"
+        variant="contained"
+        size="medium"
+        sx={{ width: 200, mt: 2 }}
+      >
+        Submit
+      </Button>
+    </Box>
+  );
+
+  const info = (
+    <Alert
+      severity="info"
+      sx={{ mt: 1 }}
+      action={
+        <Button color="inherit" href="/login" size="small">
+          Sign In
+        </Button>
+      }
+    >
+      You must be signed in to post questions.
+    </Alert>
+  );
+
   return (
     <Paper elevation={3}>
       <Box
@@ -61,46 +113,9 @@ const QuestionForm = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Post Question
+          Welcome{isAuthenticated ? " " + username : ""}, post a question:
         </Typography>
-        <Box
-          component="form"
-          onSubmit={onSubmit}
-          sx={{ mt: 1 }}
-          textAlign="center"
-        >
-          <TextField
-            required
-            margin="normal"
-            fullWidth
-            label="Summary"
-            type="text"
-            name="summary"
-            value={summary}
-            onChange={(e) => setSummary(e.target.value)}
-          />
-          <TextField
-            required
-            margin="normal"
-            fullWidth
-            label="Description"
-            type="text"
-            name="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            multiline
-            rows={4}
-          />
-          {error && <Alert severity="error">{error.message}</Alert>}
-          <Button
-            type="submit"
-            variant="contained"
-            size="medium"
-            sx={{ width: 200, mt: 2 }}
-          >
-            Submit
-          </Button>
-        </Box>
+        {isAuthenticated ? form : info}
       </Box>
     </Paper>
   );
