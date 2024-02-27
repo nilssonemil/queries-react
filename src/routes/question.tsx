@@ -14,14 +14,13 @@ const QuestionRoute = () => {
   const { key } = useParams();
   const { questions } = useQuestions();
   const navigate = useNavigate();
-  console.log("key:", key);
   const question = questions.find(q => q.key == key);
-  console.log(question)
 
   useEffect(() => {
     if (question != null) navigate(`${normalize(question.summary)}`)
   }, [key])
 
+  // TODO: If the question is not in state, should render loading and fetch the question
   if (question == null) return <NotFound />
 
   return (
