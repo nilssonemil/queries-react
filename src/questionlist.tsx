@@ -11,11 +11,13 @@ import {
 import { useEffect, useState } from "react";
 import { useQuestions } from "./hooks/usequestions";
 import ShareIcon from "@mui/icons-material/Share";
+import { useNavigate } from "react-router-dom";
 
 const QuestionList = () => {
   const { questions, setQuestions } = useQuestions();
   const [error, setError] = useState<Error | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const navigate = useNavigate();
   console.debug("render question list");
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const QuestionList = () => {
         <CardContent>
           <Typography variant="h5">{q.summary}</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            asked by {q.questioner}
+            asked by {q.author}
           </Typography>
           <Typography variant="body1">{q.description}</Typography>
         </CardContent>
@@ -56,7 +58,7 @@ const QuestionList = () => {
             <Button size="small" disabled>
               Report
             </Button>
-            <Button size="small" disabled>
+            <Button size="small" onClick={() => navigate("/question/" + q.key)}>
               Answer
             </Button>
           </Box>

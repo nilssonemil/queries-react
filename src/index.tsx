@@ -15,6 +15,7 @@ import { QuestionProvider } from "./hooks/usequestions";
 import Questions from "./routes/questions";
 import NotFound from "./routes/notfound";
 import { ThemeProvider } from "@emotion/react";
+import QuestionRoute from "./routes/question";
 
 const theme = createTheme({
   palette: {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
         path: "login",
         element: <Login />,
       },
+      {
+        path: "question/:key",
+        element: <QuestionRoute />,
+      }
     ],
   },
   {
