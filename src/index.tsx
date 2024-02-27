@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: "question/:key",
+        path: "questions/:key/*",
         element: <QuestionRoute />,
       }
     ],

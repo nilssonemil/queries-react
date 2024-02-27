@@ -58,7 +58,7 @@ const QuestionList = () => {
             <Button size="small" disabled>
               Report
             </Button>
-            <Button size="small" onClick={() => navigate("/question/" + q.key)}>
+            <Button size="small" onClick={() => navigate("/questions/" + q.key)}>
               Answer
             </Button>
           </Box>

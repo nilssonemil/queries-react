@@ -1,17 +1,26 @@
 import { Box, CardActions, Container, IconButton, Button, Card, CardContent, Typography } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import { Answer, Question } from "../types";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuestions } from "../hooks/usequestions";
 import NotFound from "./notfound";
 import AnswerForm from "../answerform";
+import { useEffect } from "react";
+
+const normalize = (str: string) =>
+  str.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
 
 const QuestionRoute = () => {
   const { key } = useParams();
   const { questions } = useQuestions();
+  const navigate = useNavigate();
   console.log("key:", key);
-  console.log("questions:", questions);
   const question = questions.find(q => q.key == key);
+  console.log(question)
+
+  useEffect(() => {
+    if (question != null) navigate(`${normalize(question.summary)}`)
+  }, [key])
 
   if (question == null) return <NotFound />
 
