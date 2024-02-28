@@ -26,6 +26,7 @@ const QuestionList = () => {
       .then((res) => res.json())
       .then(
         (questions) => {
+          console.debug(questions);
           setIsLoaded(true);
           setQuestions(questions);
         },
@@ -49,7 +50,7 @@ const QuestionList = () => {
         <CardContent>
           <Typography variant="h5">{q.summary}</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            asked by {q.author}
+            asked by {q.author.id}
           </Typography>
           <Typography variant="body1">{q.description}</Typography>
         </CardContent>
@@ -68,6 +69,7 @@ const QuestionList = () => {
         </CardActions>
       </Card>
     ));
+    console.log(listItems)
     return (
       <Box sx={{ mt: 4 }}>
         <Typography component="h1" variant="h5">

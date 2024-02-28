@@ -1,15 +1,20 @@
 export type Question = {
   key: string;
-  author: string;
+  author: Author;
   summary: string;
   description: string;
   answers: Answer[];
 };
 
+export type Author = {
+  id: string;
+  avatar: string;
+}
+
 export type Answer = {
   key: string;
   question: string;
-  author: string;
+  author: Author;
   text: string;
   answeredAt: string;
 }
