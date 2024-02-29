@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuestions } from "../hooks/usequestions";
 import NotFound from "./notfound";
 import AnswerForm from "../answerform";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AuthorAvatar from "../components/authoravatar";
 
 const normalize = (str: string) =>
@@ -14,6 +14,7 @@ const normalize = (str: string) =>
 const QuestionRoute = () => {
   const { key } = useParams();
   const { questions } = useQuestions();
+  const [showAnswerForm, setShowAnswerForm] = useState<boolean>(false);
   const navigate = useNavigate();
   const question = questions.find(q => q.key == key);
 
@@ -27,8 +28,8 @@ const QuestionRoute = () => {
   return (
     <Container component="main" maxWidth="md">
       <Box justifyContent="center" alignItems="center">
-        <AnswerForm question={question} />
-        <QuestionDetail question={question} />
+        <QuestionDetail question={question} showAnswerForm={() => setShowAnswerForm(true)} />
+        {showAnswerForm && <AnswerForm question={question} />}
         {question.answers.map(a => <AnswerDetail answer={a} />)}
       </Box>
     </Container>
@@ -68,10 +69,10 @@ const AnswerDetail: React.FunctionComponent<AnswerDetailProps> =
 
   }
 
-type QuestionDetailProps = { question: Question; }
+type QuestionDetailProps = { question: Question; showAnswerForm: () => void }
 
 const QuestionDetail: React.FunctionComponent<QuestionDetailProps> =
-  ({ question }) => {
+  ({ question, showAnswerForm }) => {
     console.log(question)
     return (
       <Card sx={{ mt: 3, p: 1 }}>
@@ -92,7 +93,7 @@ const QuestionDetail: React.FunctionComponent<QuestionDetailProps> =
             <Button size="small" disabled>
               Report
             </Button>
-            <Button size="small">
+            <Button size="small" onClick={showAnswerForm}>
               Answer
             </Button>
           </Box>
