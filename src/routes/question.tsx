@@ -1,8 +1,7 @@
-import { Box, CardActions, Container, IconButton, Button, Card, CardContent, Typography, Avatar, CardHeader } from "@mui/material";
+import { Box, CardActions, Container, IconButton, Button, Card, CardContent, Typography, } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import { Answer, Question } from "../types";
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
-import { useQuestions } from "../hooks/usequestions";
+import { useLoaderData, useParams } from "react-router-dom";
 import NotFound from "./notfound";
 import AnswerForm from "../answerform";
 import { useEffect, useState } from "react";
@@ -14,14 +13,20 @@ const normalize = (str: string) =>
 const QuestionRoute = () => {
   const { key } = useParams();
   const [showAnswerForm, setShowAnswerForm] = useState<boolean>(false);
-  const navigate = useNavigate();
   const question = useLoaderData() as Question;
 
   useEffect(() => {
-    if (question != null) navigate(`${normalize(question.summary)}`)
+    if (question != null) {
+      const location = window.location.pathname;
+      const normalizedSummary = normalize(question.summary);
+      console.debug("location:", location, "summary:", normalizedSummary)
+      if (!location.endsWith(normalizedSummary)) {
+        window.history.replaceState(null, question.summary, `${location}/${normalizedSummary}`)
+      }
+    }
   }, [key])
 
-  // TODO: If the question is not in state, should render loading and fetch the question
+
   if (question == null) return <NotFound />
 
   return (
@@ -40,7 +45,6 @@ type AnswerDetailProps = { answer: Answer }
 
 const AnswerDetail: React.FunctionComponent<AnswerDetailProps> =
   ({ answer }) => {
-    console.log(answer)
     return (
       <Card sx={{ mt: 3, p: 1 }}>
         <div style={{ display: 'flex' }}>
@@ -72,7 +76,6 @@ type QuestionDetailProps = { question: Question; showAnswerForm: () => void }
 
 const QuestionDetail: React.FunctionComponent<QuestionDetailProps> =
   ({ question, showAnswerForm }) => {
-    console.log(question)
     return (
       <Card sx={{ mt: 3, p: 1 }}>
         <div style={{ display: 'flex' }}>
