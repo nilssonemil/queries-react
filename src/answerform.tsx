@@ -80,7 +80,7 @@ const AnswerForm: React.FunctionComponent<AnswerFormProps> = ({ question }) => {
         </Button>
       }
     >
-      You must be signed in to post answers.
+      You must be signed in to answer questions.
     </Alert>
   );
 
