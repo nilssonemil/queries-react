@@ -17,7 +17,7 @@ const TokenContext = createContext({
 
 export const TokenProvider: FunctionComponent<any> = ({ children }) => {
   const [token, setToken] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState(""); // TODO: Should be read by calling the server
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const decodeJwt = (token: string) => {
