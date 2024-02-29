@@ -8,9 +8,15 @@ import {
 } from "react";
 import Question from "../types";
 
-const QuestionContext = createContext({
+export type QuestionContext = {
+  questions: Question[];
+  addQuestion: (question: Question) => void;
+  setQuestions: Dispatch<SetStateAction<Question[]>>;
+};
+
+const InternalQuestionContext = createContext<QuestionContext>({
   questions: [] as Question[],
-  addQuestion: (question: Question) => {},
+  addQuestion: (_question: Question) => { },
   setQuestions: (() => []) as Dispatch<SetStateAction<Question[]>>,
 });
 
@@ -23,10 +29,10 @@ export const QuestionProvider: FunctionComponent<any> = ({ children }) => {
   };
 
   return (
-    <QuestionContext.Provider value={{ questions, addQuestion, setQuestions }}>
+    <InternalQuestionContext.Provider value={{ questions, addQuestion, setQuestions }}>
       {children}
-    </QuestionContext.Provider>
+    </InternalQuestionContext.Provider>
   );
 };
 
-export const useQuestions = () => useContext(QuestionContext);
+export const useQuestions = () => useContext(InternalQuestionContext);

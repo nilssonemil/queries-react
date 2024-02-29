@@ -1,7 +1,7 @@
 import { Box, CardActions, Container, IconButton, Button, Card, CardContent, Typography, Avatar, CardHeader } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
 import { Answer, Question } from "../types";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate, useParams } from "react-router-dom";
 import { useQuestions } from "../hooks/usequestions";
 import NotFound from "./notfound";
 import AnswerForm from "../answerform";
@@ -13,10 +13,9 @@ const normalize = (str: string) =>
 
 const QuestionRoute = () => {
   const { key } = useParams();
-  const { questions } = useQuestions();
   const [showAnswerForm, setShowAnswerForm] = useState<boolean>(false);
   const navigate = useNavigate();
-  const question = questions.find(q => q.key == key);
+  const question = useLoaderData() as Question;
 
   useEffect(() => {
     if (question != null) navigate(`${normalize(question.summary)}`)

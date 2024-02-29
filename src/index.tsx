@@ -2,19 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
-  redirect,
   RouterProvider,
 } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import Root from "./routes/root";
 import Login from "./routes/login";
-import NavigationBar from "./navigationbar";
 import { createTheme, CssBaseline } from "@mui/material";
-import { TokenProvider, useToken } from "./hooks/usetoken";
-import { QuestionProvider } from "./hooks/usequestions";
+import { TokenProvider } from "./hooks/usetoken";
+import { QuestionProvider, useQuestions } from "./hooks/usequestions";
 import Questions from "./routes/questions";
 import NotFound from "./routes/notfound";
 import { ThemeProvider } from "@emotion/react";
+import { questionLoader } from "./questions/service";
 import QuestionRoute from "./routes/question";
 
 const theme = createTheme({
@@ -30,30 +29,37 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root />,
-    children: [
-      {
-        index: true,
-        element: <Questions />,
-      },
-      {
-        path: "login",
-        element: <Login />,
-      },
-      {
-        path: "questions/:key/*",
-        element: <QuestionRoute />,
-      }
-    ],
-  },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
-]);
+const AppRoot = () => {
+  const context = useQuestions();
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Root />,
+      children: [
+        {
+          index: true,
+          element: <Questions />,
+        },
+        {
+          path: "login",
+          element: <Login />,
+        },
+        {
+          path: "questions/:key/*",
+          element: <QuestionRoute />,
+          loader: questionLoader(context),
+        },
+      ],
+    },
+    {
+      path: "*",
+      element: <NotFound />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
+}
 
 root.render(
   <React.StrictMode>
@@ -61,7 +67,7 @@ root.render(
       <TokenProvider>
         <QuestionProvider>
           <CssBaseline>
-            <RouterProvider router={router} />
+            <AppRoot />
           </CssBaseline>
         </QuestionProvider>
       </TokenProvider>

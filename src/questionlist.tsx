@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { useQuestions } from "./hooks/usequestions";
 import ShareIcon from "@mui/icons-material/Share";
 import { useNavigate } from "react-router-dom";
+import { fetchQuestions } from "./questions/service";
 
 const QuestionList = () => {
   const { questions, setQuestions } = useQuestions();
@@ -22,8 +23,7 @@ const QuestionList = () => {
 
   useEffect(() => {
     setIsLoaded(false);
-    fetch("http://localhost:8080/questions")
-      .then((res) => res.json())
+    fetchQuestions()
       .then(
         (questions) => {
           console.debug(questions);
