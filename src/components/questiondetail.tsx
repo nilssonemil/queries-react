@@ -2,6 +2,7 @@ import { Box, Button, IconButton, Stack, Typography } from "@mui/material"
 import ShareIcon from "@mui/icons-material/Share";
 import Question from "../types"
 import AuthorAvatar from "./authoravatar"
+import MarkdownBox from "./markdownbox"
 
 type Props = { question: Question, onAnswer?: () => void }
 
@@ -13,7 +14,7 @@ const QuestionDetail: React.FunctionComponent<Props> = ({ question, onAnswer }) 
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
           asked by {question.author.id}
         </Typography>
-        <Typography variant="body1">{question.description}</Typography>
+        <MarkdownBox text={question.description} />
       </Box>
       <Box>
         <AuthorAvatar author={question.author} />

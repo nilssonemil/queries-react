@@ -7,6 +7,7 @@ import AnswerForm from "../answerform";
 import { useEffect, useState } from "react";
 import AuthorAvatar from "../components/authoravatar";
 import QuestionDetail from "../components/questiondetail";
+import MarkdownBox from "../components/markdownbox";
 
 const normalize = (str: string) =>
   str.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '').toLowerCase();
@@ -49,8 +50,8 @@ const AnswerDetail: React.FunctionComponent<AnswerDetailProps> =
     return (
       <Card sx={{ mt: 3, p: 1 }}>
         <div style={{ display: 'flex' }}>
-          <CardContent>
-            <Typography variant="body1">{answer.text}</Typography>
+          <CardContent style={{ flexGrow: 1 }}>
+            <MarkdownBox text={answer.text} />
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
               answered by {answer.author.id}
             </Typography>
