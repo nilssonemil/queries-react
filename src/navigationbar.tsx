@@ -1,18 +1,18 @@
 import { AppBar, Button, Stack, Toolbar, Typography } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import { useToken } from "./hooks/usetoken";
+import AuthorAvatar from "./components/authoravatar";
 
 const NavigationBar = () => {
-  const { username, isAuthenticated } = useToken();
+  const { user } = useToken();
 
-  const action = isAuthenticated ? (
-    <Stack direction="row">
-      <AccountCircleIcon sx={{ mr: 1 }} />
-      <Typography>{username}</Typography>
-    </Stack>
-  ) : (
+  const action = user === undefined ? (
     <Button href="/login">Login</Button>
+  ) : (
+    <Stack direction="row" alignItems="center">
+      <Typography sx={{ mr: 1 }}>{user.id}</Typography>
+      <AuthorAvatar author={user} small />
+    </Stack>
   );
 
   const logo = (

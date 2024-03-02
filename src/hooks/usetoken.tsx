@@ -1,23 +1,29 @@
 import {
   createContext,
-  Dispatch,
   FunctionComponent,
-  SetStateAction,
   useContext,
   useEffect,
   useState,
 } from "react";
+import { Author } from "../types";
 
-const TokenContext = createContext({
+type TokenContext = {
+  isAuthenticated: boolean,
+  token: string,
+  user: Author | undefined,
+  setCredentials: (token: string) => void,
+}
+
+const InternalTokenContext = createContext<TokenContext>({
   isAuthenticated: false,
   token: "",
-  username: "",
-  setCredentials: (username: string, token: string) => { },
+  user: undefined,
+  setCredentials: (_: string) => { },
 });
 
 export const TokenProvider: FunctionComponent<any> = ({ children }) => {
   const [token, setToken] = useState("");
-  const [username, setUsername] = useState(""); // TODO: Should be read by calling the server
+  const [user, setUser] = useState<Author>();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const decodeJwt = (token: string) => {
@@ -35,10 +41,22 @@ export const TokenProvider: FunctionComponent<any> = ({ children }) => {
       const token = cookie.split("=")[1]
       if (token) {
         setToken(token);
+        updateUser(token);
         setIsAuthenticated(true);
-        const username = decodeJwt(token).sub;
-        setUsername(username);
       }
+    }
+  }
+
+  const updateUser = async (token: string) => {
+    const response = await fetch("http://localhost:8080/users/me", {
+      headers: {
+        Authorization: "Bearer " + token,
+      }
+    })
+
+    if (response.status === 200) {
+      const json = await response.json()
+      setUser(json)
     }
   }
 
@@ -51,20 +69,19 @@ export const TokenProvider: FunctionComponent<any> = ({ children }) => {
 
   useEffect(() => readTokenFromCookies, []);
 
-  const setCredentials = (username: string, token: string) => {
-    setUsername(username);
+  const setCredentials = (token: string) => {
     setToken(token);
-    setIsAuthenticated(token != "");
+    updateUser(token);
     storeTokenInCookies(token);
   };
 
   return (
-    <TokenContext.Provider
-      value={{ isAuthenticated, token, username, setCredentials }}
+    <InternalTokenContext.Provider
+      value={{ isAuthenticated, token, setCredentials, user }}
     >
       {children}
-    </TokenContext.Provider>
+    </InternalTokenContext.Provider>
   );
 };
 
-export const useToken = () => useContext(TokenContext);
+export const useToken = () => useContext(InternalTokenContext);

@@ -39,7 +39,7 @@ const LoginForm = () => {
     if (response.status === 401) {
       setError(Error("Username or password is incorrect."));
     } else if (response.status === 200) {
-      setCredentials(username, (await response.json()).token);
+      setCredentials((await response.json()).token);
     }
     setIsLoaded(true);
   };

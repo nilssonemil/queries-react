@@ -11,7 +11,7 @@ import { useQuestions } from "./hooks/usequestions";
 import { useToken } from "./hooks/usetoken";
 
 const QuestionForm = () => {
-  const { isAuthenticated, token, username } = useToken();
+  const { isAuthenticated, token, user } = useToken();
   const { addQuestion } = useQuestions();
   const [summary, setSummary] = useState<string>("");
   const [description, setDescription] = useState<string>("");
@@ -112,7 +112,7 @@ const QuestionForm = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Welcome{isAuthenticated ? " " + username : ""}, post a question:
+          Welcome{user !== undefined ? " " + user.id : ""}, post a question:
         </Typography>
         {isAuthenticated ? form : info}
       </Box>
